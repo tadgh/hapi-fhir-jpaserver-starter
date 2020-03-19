@@ -6,6 +6,7 @@ import ca.uhn.fhir.jpa.search.elastic.ElasticsearchHibernatePropertiesBuilder;
 import ca.uhn.fhir.rest.api.EncodingEnum;
 import ca.uhn.fhir.rest.server.ETagSupportEnum;
 import com.google.common.annotations.VisibleForTesting;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.search.elasticsearch.cfg.ElasticsearchIndexStatus;
 import org.hibernate.search.elasticsearch.cfg.IndexSchemaManagementStrategy;
 import org.jetbrains.annotations.NotNull;
@@ -344,8 +345,8 @@ public class HapiProperties {
   public static Set<String> getSupportedResourceTypes() {
     String[] types = defaultString(getProperty("supported_resource_types")).split(",");
     return Arrays.stream(types)
-      .map(t -> trim(t))
-      .filter(t -> isNotBlank(t))
+      .map(StringUtils::trim)
+      .filter(StringUtils::isNotBlank)
       .collect(Collectors.toSet());
   }
 
