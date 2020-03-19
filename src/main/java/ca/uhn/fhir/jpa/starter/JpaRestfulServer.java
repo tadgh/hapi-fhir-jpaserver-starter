@@ -22,6 +22,8 @@ import ca.uhn.fhir.jpa.provider.r4.JpaSystemProviderR4;
 import ca.uhn.fhir.jpa.provider.r5.JpaConformanceProviderR5;
 import ca.uhn.fhir.jpa.provider.r5.JpaSystemProviderR5;
 import ca.uhn.fhir.jpa.search.DatabaseBackedPagingProvider;
+import ca.uhn.fhir.jpa.starter.interceptors.AnonymousWriteAdminSearchAuthorizationInterceptor;
+import ca.uhn.fhir.jpa.starter.interceptors.MetadataCollectingInterceptor;
 import ca.uhn.fhir.jpa.subscription.SubscriptionInterceptorLoader;
 import ca.uhn.fhir.jpa.subscription.module.interceptor.SubscriptionDebugLogInterceptor;
 import ca.uhn.fhir.jpa.util.ResourceProviderFactory;
@@ -34,6 +36,7 @@ import ca.uhn.fhir.rest.server.interceptor.LoggingInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.RequestValidatingInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.ResponseHighlighterInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.ResponseValidatingInterceptor;
+import ca.uhn.fhir.rest.server.interceptor.auth.AuthorizationInterceptor;
 import ca.uhn.fhir.validation.IValidatorModule;
 import ca.uhn.fhir.validation.ResultSeverityEnum;
 import java.util.HashSet;
@@ -41,6 +44,7 @@ import java.util.TreeSet;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.dstu3.model.Meta;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsConfiguration;
@@ -181,6 +185,12 @@ public class JpaRestfulServer extends RestfulServer {
     ResponseHighlighterInterceptor responseHighlighterInterceptor = new ResponseHighlighterInterceptor();
     ;
     this.registerInterceptor(responseHighlighterInterceptor);
+
+    AnonymousWriteAdminSearchAuthorizationInterceptor authorizationInterceptor = appCtx.getBean(AnonymousWriteAdminSearchAuthorizationInterceptor.class);
+    this.registerInterceptor(authorizationInterceptor);
+
+    MetadataCollectingInterceptor metadataCollectingInterceptor = appCtx.getBean(MetadataCollectingInterceptor.class);
+    this.registerInterceptor(metadataCollectingInterceptor);
 
     /*
      * Add some logging for each request

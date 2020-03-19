@@ -4,9 +4,12 @@ import ca.uhn.fhir.jpa.binstore.DatabaseBlobBinaryStorageSvcImpl;
 import ca.uhn.fhir.jpa.binstore.IBinaryStorageSvc;
 import ca.uhn.fhir.jpa.dao.DaoConfig;
 import ca.uhn.fhir.jpa.model.entity.ModelConfig;
+import ca.uhn.fhir.jpa.starter.interceptors.AnonymousWriteAdminSearchAuthorizationInterceptor;
+import ca.uhn.fhir.jpa.starter.interceptors.MetadataCollectingInterceptor;
 import ca.uhn.fhir.jpa.subscription.module.channel.SubscriptionDeliveryHandlerFactory;
 import ca.uhn.fhir.jpa.subscription.module.subscriber.email.IEmailSender;
 import ca.uhn.fhir.jpa.subscription.module.subscriber.email.JavaMailEmailSender;
+import ca.uhn.fhir.rest.server.interceptor.auth.AuthorizationInterceptor;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hl7.fhir.dstu2.model.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,5 +208,15 @@ public class FhirServerConfigCommon {
     }
 
     return null;
+  }
+
+  @Bean
+  public AnonymousWriteAdminSearchAuthorizationInterceptor authorizationInterceptor() {
+    return new AnonymousWriteAdminSearchAuthorizationInterceptor();
+  }
+
+  @Bean
+  public MetadataCollectingInterceptor metadataCollectingInterceptor() {
+    return new MetadataCollectingInterceptor();
   }
 }

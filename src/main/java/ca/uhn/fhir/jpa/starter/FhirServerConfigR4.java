@@ -31,6 +31,7 @@ public class FhirServerConfigR4 extends BaseJavaConfigR4 {
         return pagingProvider;
     }
 
+
     @Override
     @Bean()
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {

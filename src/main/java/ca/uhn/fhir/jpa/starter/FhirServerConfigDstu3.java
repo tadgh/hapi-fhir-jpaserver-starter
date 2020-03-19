@@ -3,6 +3,8 @@ package ca.uhn.fhir.jpa.starter;
 import ca.uhn.fhir.context.ConfigurationException;
 import ca.uhn.fhir.jpa.config.BaseJavaConfigDstu3;
 import ca.uhn.fhir.jpa.search.DatabaseBackedPagingProvider;
+import ca.uhn.fhir.jpa.starter.interceptors.AnonymousWriteAdminSearchAuthorizationInterceptor;
+import ca.uhn.fhir.rest.server.interceptor.auth.AuthorizationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,5 +55,4 @@ public class FhirServerConfigDstu3 extends BaseJavaConfigDstu3 {
         retVal.setEntityManagerFactory(entityManagerFactory);
         return retVal;
     }
-
 }
