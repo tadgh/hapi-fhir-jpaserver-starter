@@ -6,6 +6,7 @@ import ca.uhn.fhir.jpa.dao.DaoConfig;
 import ca.uhn.fhir.jpa.model.entity.ModelConfig;
 import ca.uhn.fhir.jpa.starter.interceptors.AnonymousWriteAdminSearchAuthorizationInterceptor;
 import ca.uhn.fhir.jpa.starter.interceptors.MetadataCollectingInterceptor;
+import ca.uhn.fhir.jpa.starter.interceptors.QuestionnaireResponseElasticEmitterInterceptor;
 import ca.uhn.fhir.jpa.subscription.module.channel.SubscriptionDeliveryHandlerFactory;
 import ca.uhn.fhir.jpa.subscription.module.subscriber.email.IEmailSender;
 import ca.uhn.fhir.jpa.subscription.module.subscriber.email.JavaMailEmailSender;
@@ -218,5 +219,10 @@ public class FhirServerConfigCommon {
   @Bean
   public MetadataCollectingInterceptor metadataCollectingInterceptor() {
     return new MetadataCollectingInterceptor();
+  }
+
+  @Bean
+  public QuestionnaireResponseElasticEmitterInterceptor questionnaireResponseElasticEmitterInterceptor() {
+    return new QuestionnaireResponseElasticEmitterInterceptor();
   }
 }
