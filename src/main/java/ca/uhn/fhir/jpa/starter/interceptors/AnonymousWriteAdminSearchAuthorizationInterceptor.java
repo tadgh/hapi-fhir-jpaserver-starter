@@ -7,6 +7,7 @@ import ca.uhn.fhir.rest.server.interceptor.auth.IAuthRule;
 import ca.uhn.fhir.rest.server.interceptor.auth.RuleBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
+import org.hl7.fhir.r4.model.ValueSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +32,9 @@ public class AnonymousWriteAdminSearchAuthorizationInterceptor extends Authoriza
     } else {
       return new RuleBuilder()
         .allow().write().resourcesOfType(QuestionnaireResponse.class).withAnyId().andThen()
-        .allow().read().resourcesOfType(QuestionnaireResponse.class).withAnyId()
-        .andThen().denyAll()
+        .allow().read().resourcesOfType(QuestionnaireResponse.class).withAnyId().andThen()
+        .allow().read().resourcesOfType(ValueSet.class).withAnyId().andThen()
+        .denyAll()
         .build();
     }
   }
