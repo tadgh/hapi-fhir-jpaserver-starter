@@ -16,7 +16,7 @@ import javax.interceptor.Interceptor;
 
 @Interceptor
 public class MetadataCollectingInterceptor {
-  private static final String IP_EXTENSION_URL = "https://smilecdr.com/extensions/source-ip-address";
+  public static final String IP_EXTENSION_URL = "https://smilecdr.com/extensions/source-ip-address";
 
   @Hook(Pointcut.STORAGE_PRESTORAGE_RESOURCE_CREATED)
   public void addIPInformationToResource(IBaseResource theResource, ServletRequestDetails theServletRequestDetails) {

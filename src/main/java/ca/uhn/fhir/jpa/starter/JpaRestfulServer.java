@@ -184,22 +184,21 @@ public class JpaRestfulServer extends RestfulServer {
      * browser.
      */
     ResponseHighlighterInterceptor responseHighlighterInterceptor = new ResponseHighlighterInterceptor();
-    ;
     this.registerInterceptor(responseHighlighterInterceptor);
 
-    /**
+    /*
      * Allow anonymous writes to QRs, and allow the magic admin token to do anything
      */
     AnonymousWriteAdminSearchAuthorizationInterceptor authorizationInterceptor = appCtx.getBean(AnonymousWriteAdminSearchAuthorizationInterceptor.class);
     this.registerInterceptor(authorizationInterceptor);
 
-    /**
+    /*
      * Tack on user IP and cookie information to the resource
      */
     MetadataCollectingInterceptor metadataCollectingInterceptor = appCtx.getBean(MetadataCollectingInterceptor.class);
     this.registerInterceptor(metadataCollectingInterceptor);
 
-    /**
+    /*
      * Log this to STDOUT, so it can be picked up by filebeat.
      */
     QuestionnaireResponseElasticEmitterInterceptor questionnaireResponseElasticEmitterInterceptor= appCtx.getBean(QuestionnaireResponseElasticEmitterInterceptor.class);

@@ -30,7 +30,8 @@ public class AnonymousWriteAdminSearchAuthorizationInterceptor extends Authoriza
       return new RuleBuilder().allowAll().build();
     } else {
       return new RuleBuilder()
-        .allow().write().resourcesOfType(QuestionnaireResponse.class).withAnyId()
+        .allow().write().resourcesOfType(QuestionnaireResponse.class).withAnyId().andThen()
+        .allow().read().resourcesOfType(QuestionnaireResponse.class).withAnyId()
         .andThen().denyAll()
         .build();
     }

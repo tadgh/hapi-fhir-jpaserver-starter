@@ -3,7 +3,12 @@ package ca.uhn.fhir.jpa.starter.interceptors;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.interceptor.api.Hook;
 import ca.uhn.fhir.interceptor.api.Pointcut;
+import ca.uhn.fhir.jpa.starter.models.QuestionnaireResponseFlattened;
 import ca.uhn.fhir.rest.server.servlet.ServletRequestDetails;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import org.h2.util.json.JSONObject;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.hl7.fhir.r4.model.StringType;
@@ -24,7 +29,15 @@ public class QuestionnaireResponseElasticEmitterInterceptor {
   @Hook(Pointcut.STORAGE_PRECOMMIT_RESOURCE_CREATED)
   public void flattenAndLogQuestionnaireResponse(IBaseResource theResource, ServletRequestDetails theServletRequestDetails) {
     if (theResource instanceof QuestionnaireResponse) {
-      ourLog.info("AUDIT:{} ", myContext.newJsonParser().encodeResourceToString(theResource));
+      ObjectMapper mapper = new ObjectMapper();
+      QuestionnaireResponseFlattened questionnaireResponseFlattened = new QuestionnaireResponseFlattened((QuestionnaireResponse) theResource);
+
+      try {
+        ourLog.info("AUDIT:{} ", mapper.writeValueAsString(questionnaireResponseFlattened));
+      } catch (JsonProcessingException theE) {
+        theE.printStackTrace();
+      }
     }
   }
+
 }
