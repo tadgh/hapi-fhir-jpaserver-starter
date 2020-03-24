@@ -325,7 +325,7 @@ public class HapiProperties {
     return HapiProperties.getIntegerProperty(TEST_PORT, 0);
   }
 
-  public static Boolean getTesterConfigRefustToFetchThirdPartyUrls() {
+  public static Boolean getTesterConfigRefuseToFetchThirdPartyUrls() {
     return HapiProperties.getBooleanProperty(TESTER_CONFIG_REFUSE_TO_FETCH_THIRD_PARTY_URLS, false);
   }
 

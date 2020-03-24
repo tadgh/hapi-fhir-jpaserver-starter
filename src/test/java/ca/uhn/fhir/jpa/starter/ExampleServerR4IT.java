@@ -6,6 +6,7 @@ import ca.uhn.fhir.rest.api.EncodingEnum;
 import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.api.ServerValidationModeEnum;
+import ca.uhn.fhir.rest.client.interceptor.BearerTokenAuthInterceptor;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import ca.uhn.fhir.test.utilities.JettyUtil;
 import org.eclipse.jetty.server.Server;
@@ -14,13 +15,15 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.hl7.fhir.instance.model.api.IIdType;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Subscription;
+import org.hl7.fhir.r4.model.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
 import java.nio.file.Paths;
@@ -30,8 +33,12 @@ import java.util.concurrent.TimeUnit;
 import static ca.uhn.fhir.util.TestUtil.waitForSize;
 import static org.junit.Assert.assertEquals;
 
+@TestPropertySource(properties = {"admin.token=test_token"})
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = FhirServerConfigR4.class)
 public class ExampleServerR4IT {
 
+  private static final String ADMIN_TOKEN = "test_token";
     private static final org.slf4j.Logger ourLog = org.slf4j.LoggerFactory.getLogger(ExampleServerR4IT.class);
     private static IGenericClient ourClient;
     private static FhirContext ourCtx;
@@ -125,8 +132,9 @@ public class ExampleServerR4IT {
     @BeforeClass
     public static void beforeClass() throws Exception {
         String path = Paths.get("").toAbsolutePath().toString();
+        System.setProperty("admin.token", ADMIN_TOKEN);
 
-        ourLog.info("Project base path is: {}", path);
+      ourLog.info("Project base path is: {}", path);
 
         ourServer = new Server(0);
 

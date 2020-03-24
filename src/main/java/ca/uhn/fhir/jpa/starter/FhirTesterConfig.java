@@ -43,7 +43,7 @@ public class FhirTesterConfig {
 				.withFhirVersion(HapiProperties.getFhirVersion())
 				.withBaseUrl(HapiProperties.getServerAddress())
 				.withName(HapiProperties.getServerName());
-		retVal.setRefuseToFetchThirdPartyUrls(HapiProperties.getTesterConfigRefustToFetchThirdPartyUrls());
+		retVal.setRefuseToFetchThirdPartyUrls(HapiProperties.getTesterConfigRefuseToFetchThirdPartyUrls());
 		return retVal;
 	}
 
