@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.interceptor.Interceptor;
 
+import static ca.uhn.fhir.jpa.starter.Constants.SELF_ASSESSMENT_IDENTIFIER;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Interceptor
