@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static ca.uhn.fhir.jpa.starter.Constants.COOKIE_EXTENSION_URL;
+import static ca.uhn.fhir.jpa.starter.Constants.IP_EXTENSION_URL;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonAutoDetect(creatorVisibility = JsonAutoDetect.Visibility.NONE, fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, isGetterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class QuestionnaireResponseFlattened {
@@ -39,11 +42,15 @@ public class QuestionnaireResponseFlattened {
   String clinicalOutcome;
 
   @JsonProperty
+  String cookie;
+
+  @JsonProperty
   @JsonSerialize(using = JsonDateSerializer.class)
   Date creationDate;
 
   public QuestionnaireResponseFlattened(QuestionnaireResponse theQuestionnaireResponse) {
-    this.ipAddress = theQuestionnaireResponse.getExtensionByUrl(MetadataCollectingInterceptor.IP_EXTENSION_URL).getValue().toString();
+    this.ipAddress = theQuestionnaireResponse.getExtensionByUrl(IP_EXTENSION_URL).getValue().toString();
+    this.cookie = theQuestionnaireResponse.getExtensionByUrl(COOKIE_EXTENSION_URL).getValue().toString();
     this.creationDate = theQuestionnaireResponse.getAuthored();
     this.answers = buildQuestionAndAnswerMap(theQuestionnaireResponse);
     this.extensions = buildExtensionsMap(theQuestionnaireResponse);

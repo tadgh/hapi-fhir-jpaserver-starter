@@ -7,11 +7,8 @@ import ca.uhn.fhir.jpa.starter.models.QuestionnaireResponseFlattened;
 import ca.uhn.fhir.rest.server.servlet.ServletRequestDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import org.h2.util.json.JSONObject;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
-import org.hl7.fhir.r4.model.StringType;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,7 +25,7 @@ public class QuestionnaireResponseElasticEmitterInterceptor {
 
   @Hook(Pointcut.STORAGE_PRECOMMIT_RESOURCE_CREATED)
   public void flattenAndLogQuestionnaireResponse(IBaseResource theResource, ServletRequestDetails theServletRequestDetails) {
-    if (theResource instanceof QuestionnaireResponse) {
+    if (isSelfAssessment(theResource)) {
       ObjectMapper mapper = new ObjectMapper();
       QuestionnaireResponseFlattened questionnaireResponseFlattened = new QuestionnaireResponseFlattened((QuestionnaireResponse) theResource);
 
@@ -38,6 +35,10 @@ public class QuestionnaireResponseElasticEmitterInterceptor {
         theE.printStackTrace();
       }
     }
+  }
+
+  private boolean isSelfAssessment(IBaseResource theResource) {
+    return theResource instanceof QuestionnaireResponse && SELF_ASSESSMENT_IDENTIFIER.equalsIgnoreCase(((QuestionnaireResponse)theResource).getIdentifier().getValue());
   }
 
 }
