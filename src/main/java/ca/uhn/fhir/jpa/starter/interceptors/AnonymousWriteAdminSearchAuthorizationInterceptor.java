@@ -6,11 +6,12 @@ import ca.uhn.fhir.rest.server.interceptor.auth.AuthorizationInterceptor;
 import ca.uhn.fhir.rest.server.interceptor.auth.IAuthRule;
 import ca.uhn.fhir.rest.server.interceptor.auth.RuleBuilder;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Questionnaire;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
+import org.hl7.fhir.r4.model.ServiceRequest;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import javax.interceptor.Interceptor;
 import java.util.List;
@@ -35,6 +36,10 @@ public class AnonymousWriteAdminSearchAuthorizationInterceptor extends Authoriza
         .allow().write().resourcesOfType(QuestionnaireResponse.class).withAnyId().andThen()
         .allow().read().resourcesOfType(Questionnaire.class).withAnyId().andThen()
         .allow().read().resourcesOfType(ValueSet.class).withAnyId().andThen()
+        .allow().write().resourcesOfType(Patient.class).withAnyId().andThen()
+        .allow().read().resourcesOfType(Patient.class).withAnyId().andThen()
+        .allow().write().resourcesOfType(ServiceRequest.class).withAnyId().andThen()
+        .allow().read().resourcesOfType(ServiceRequest.class).withAnyId().andThen()
         .denyAll()
         .build();
     }
